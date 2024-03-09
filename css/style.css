@@ -423,7 +423,7 @@ main section .container .skills .skill-box .skill-name {
 main section .container .skills .skill-box .skill-progress {
    background-color: #f6f6f6;
    border-radius: 6px;
-   height: 1.9rem;
+   height: 1.6rem;
    width: 100%;
    position: relative;
    overflow: hidden;
