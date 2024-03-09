@@ -13,7 +13,6 @@ function findCssRule(selectorString) {
                 }
             }
         }
-        
         return false;
     }
     
@@ -182,3 +181,31 @@ if (selector === "yes") {
 }
 
 /* End Header Actions */
+
+/* Start Main */
+
+// Select Skills Element
+let ourSkills = document.querySelector("main .our-skills .container .skills");
+
+// Select Skills Progress Items
+let skillsProgress = document.querySelectorAll("main .our-skills .container .skills .skill-box .skill-progress");
+
+// Make An Action When Scrolling
+window.onscroll = function() {
+    // Get The Amount Of Scrolling To reach The Top Of Our Skills Element
+    let ourSkillsOffsetTop = ourSkills.offsetTop;
+    if (window.scrollY >= ourSkillsOffsetTop - 650) {
+        skillsProgress.forEach((item) => {
+            // Get Skill Name
+            let skillName = item.classList[1];
+            // Get After Selector For Each Element
+            let elementAfter = findCssRule(`main section .container .skills .skill-box .${skillName}::after`);
+            // Get Amount Of Width For Each Element
+            let elementWidth = item.dataset.progress;
+            // elementAfter.style.setProperty("width", "20px");
+            elementAfter.setProperty("width", elementWidth);
+        });
+    }
+}
+
+/* End Main */
