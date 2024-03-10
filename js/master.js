@@ -189,11 +189,13 @@ let ourSkills = document.querySelector("main .our-skills .container .skills");
 
 // Select Skills Progress Items
 let skillsProgress = document.querySelectorAll("main .our-skills .container .skills .skill-box .skill-progress");
+// Get The Amount Of Scrolling To reach The Top Of Our Skills Element
+let ourSkillsOffsetTop = ourSkills.offsetTop;
+// For Checking counter
+let doneCounter = false;
 
 // Make An Action When Scrolling
 window.onscroll = function() {
-    // Get The Amount Of Scrolling To reach The Top Of Our Skills Element
-    let ourSkillsOffsetTop = ourSkills.offsetTop;
     if (window.scrollY >= ourSkillsOffsetTop - 650) {
         skillsProgress.forEach((item) => {
             // Get Skill Name
@@ -202,10 +204,131 @@ window.onscroll = function() {
             let elementAfter = findCssRule(`main section .container .skills .skill-box .${skillName}::after`);
             // Get Amount Of Width For Each Element
             let elementWidth = item.dataset.progress;
-            // elementAfter.style.setProperty("width", "20px");
             elementAfter.setProperty("width", elementWidth);
+            // Check If Counter Is Written Or Not
+            if (!doneCounter) {
+                // Get Before Selector For Each Element
+                let elementBefore = findCssRule(`main section .container .skills .skill-box .${skillName}::before`);
+                let count = 0;
+                let targetCount = elementWidth.substring(0, elementWidth.length - 1);
+                let duration = 1550;
+                let intervalTime = duration / targetCount;
+                console.log(intervalTime + " " + targetCount);
+                // Function to update counter
+                function updateCounter() {
+                    count++;
+                    elementBefore.setProperty("content", `'${count}%'`);
+                    if (count < targetCount) {
+                        // Continue updating until the target count is reached
+                        setTimeout(updateCounter, intervalTime);
+                    }
+                }
+                // Start the counter
+                setTimeout(updateCounter, intervalTime);
+            }
         });
+        doneCounter = true;
     }
 }
+
+if (window.scrollY >= ourSkillsOffsetTop - 650) {
+    skillsProgress.forEach((item) => {
+        // Get Skill Name
+        let skillName = item.classList[1];
+        // Get After Selector For Each Element
+        let elementAfter = findCssRule(`main section .container .skills .skill-box .${skillName}::after`);
+        // Get Amount Of Width For Each Element
+        let elementWidth = item.dataset.progress;
+        // elementAfter.style.setProperty("width", "20px");
+        elementAfter.setProperty("width", elementWidth);
+        // Check If Counter Is Written Or Not
+        if (!doneCounter) {
+            // Get Before Selector For Each Element
+            let elementBefore = findCssRule(`main section .container .skills .skill-box .${skillName}::before`);
+            let count = 0;
+            let targetCount = elementWidth.substring(0, elementWidth.length - 1);
+            let duration = 1550;
+            let intervalTime = duration / targetCount;
+            console.log(intervalTime + " " + targetCount);
+            // Function to update counter
+            function updateCounter() {
+                count++;
+                elementBefore.setProperty("content", `'${count}%'`);
+                if (count < targetCount) {
+                    // Continue updating until the target count is reached
+                    setTimeout(updateCounter, intervalTime);
+                }
+            }
+            // Start the counter
+            setTimeout(updateCounter, intervalTime);
+        }
+    });
+    doneCounter = true;
+}
+
+// Get All Images Of Gallery
+let ourGalleryImages = document.querySelectorAll("main section .container .images-box img");
+ourGalleryImages.forEach((item) => {
+    item.onclick = function() {
+        // Create Overlay Element
+        let overlayCreated = document.createElement("div");
+        // Add Class Name To Overlay
+        overlayCreated.classList.add("popup-overlay");
+        // Append Overlay To The Body
+        document.body.append(overlayCreated);
+        // Create Popup Box Element
+        let popupBoxCreated = document.createElement("div");
+        // Add Class Name To Popup Box
+        popupBoxCreated.classList.add("popup-box");
+        if (item.getAttribute("alt")) {
+            // Create Image Heading
+            let imageHeading = document.createElement("h3");
+            // Create Text For Heading
+            let headingText = document.createTextNode(item.getAttribute("alt"));
+            // Append Text To Heading
+            imageHeading.append(headingText);
+            // Append Image Heading To Popup Box
+            popupBoxCreated.append(imageHeading);
+        }
+        // Create Popup Image
+        let popupImageCreated = document.createElement("img");
+        // Add Class Name To Popup Image
+        popupImageCreated.classList.add("popup-image");
+        // Get Src Of Clicked Image
+        let imageSrc = item.getAttribute("src");
+        // Set Src Of Clicked Image To Popup Image
+        popupImageCreated.setAttribute("src", imageSrc);
+        // Append Popup Image to Popup Box
+        popupBoxCreated.append(popupImageCreated);
+        // Append Popup Box To Body
+        document.body.append(popupBoxCreated);
+        // Create Close Button
+        let closeButtonCreated = document.createElement("div");
+        // Create X char
+        let closeTextCreated = document.createTextNode("X");
+        // Append Close Text To Close Button
+        closeButtonCreated.append(closeTextCreated);
+        // Add Class Name To Close Button
+        closeButtonCreated.classList.add("close-button");
+        // Append Close Button To Popup Box
+        popupBoxCreated.append(closeButtonCreated);
+    }
+});
+
+// Close Popup
+document.addEventListener("click", function(event) {
+    let element = event.target;
+    console.log(element);
+    if (element.classList.contains("close-button")) {
+        // Get Popup Box Element
+        let popupBox = document.querySelector("div[class='popup-box']");
+        // Remove Popup Box Element From Body
+        popupBox.remove();
+        // Get Overlay Element
+        let overlay = document.querySelector("div[class='popup-overlay']");
+        // Remove Overlay Element From Body
+        overlay.remove();
+    }
+});
 
 /* End Main */
