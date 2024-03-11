@@ -194,7 +194,7 @@ let ourSkillsOffsetTop = ourSkills.offsetTop;
 // For Checking counter
 let doneCounter = false;
 
-// Make An Action When Scrolling
+// Make Event When Scrolling
 window.onscroll = function() {
     if (window.scrollY >= ourSkillsOffsetTop - 650) {
         skillsProgress.forEach((item) => {
@@ -213,7 +213,6 @@ window.onscroll = function() {
                 let targetCount = elementWidth.substring(0, elementWidth.length - 1);
                 let duration = 1550;
                 let intervalTime = duration / targetCount;
-                console.log(intervalTime + " " + targetCount);
                 // Function to update counter
                 function updateCounter() {
                     count++;
@@ -249,7 +248,6 @@ if (window.scrollY >= ourSkillsOffsetTop - 650) {
             let targetCount = elementWidth.substring(0, elementWidth.length - 1);
             let duration = 1550;
             let intervalTime = duration / targetCount;
-            console.log(intervalTime + " " + targetCount);
             // Function to update counter
             function updateCounter() {
                 count++;
@@ -267,58 +265,61 @@ if (window.scrollY >= ourSkillsOffsetTop - 650) {
 }
 
 // Get All Images Of Gallery
-let ourGalleryImages = document.querySelectorAll("main section .container .images-box img");
+let ourGalleryImages = document.querySelectorAll("main section .container .images-box .scrolling-images img");
+// Canceling Click If Dragging Is Executed
+let clickCancel = false;
 ourGalleryImages.forEach((item) => {
-    item.onclick = function() {
-        // Create Overlay Element
-        let overlayCreated = document.createElement("div");
-        // Add Class Name To Overlay
-        overlayCreated.classList.add("popup-overlay");
-        // Append Overlay To The Body
-        document.body.append(overlayCreated);
-        // Create Popup Box Element
-        let popupBoxCreated = document.createElement("div");
-        // Add Class Name To Popup Box
-        popupBoxCreated.classList.add("popup-box");
-        if (item.getAttribute("alt")) {
-            // Create Image Heading
-            let imageHeading = document.createElement("h3");
-            // Create Text For Heading
-            let headingText = document.createTextNode(item.getAttribute("alt"));
-            // Append Text To Heading
-            imageHeading.append(headingText);
-            // Append Image Heading To Popup Box
-            popupBoxCreated.append(imageHeading);
+    item.onclick = function(event) {
+        if (!clickCancel) {
+            // Create Overlay Element
+            let overlayCreated = document.createElement("div");
+            // Add Class Name To Overlay
+            overlayCreated.classList.add("popup-overlay");
+            // Append Overlay To The Body
+            document.body.append(overlayCreated);
+            // Create Popup Box Element
+            let popupBoxCreated = document.createElement("div");
+            // Add Class Name To Popup Box
+            popupBoxCreated.classList.add("popup-box");
+            if (item.getAttribute("alt")) {
+                // Create Image Heading
+                let imageHeading = document.createElement("h3");
+                // Create Text For Heading
+                let headingText = document.createTextNode(item.getAttribute("alt"));
+                // Append Text To Heading
+                imageHeading.append(headingText);
+                // Append Image Heading To Popup Box
+                popupBoxCreated.append(imageHeading);
+            }
+            // Create Popup Image
+            let popupImageCreated = document.createElement("img");
+            // Add Class Name To Popup Image
+            popupImageCreated.classList.add("popup-image");
+            // Get Src Of Clicked Image
+            let imageSrc = item.getAttribute("src");
+            // Set Src Of Clicked Image To Popup Image
+            popupImageCreated.setAttribute("src", imageSrc);
+            // Append Popup Image to Popup Box
+            popupBoxCreated.append(popupImageCreated);
+            // Append Popup Box To Body
+            document.body.append(popupBoxCreated);
+            // Create Close Button
+            let closeButtonCreated = document.createElement("div");
+            // Create X char
+            let closeTextCreated = document.createTextNode("X");
+            // Append Close Text To Close Button
+            closeButtonCreated.append(closeTextCreated);
+            // Add Class Name To Close Button
+            closeButtonCreated.classList.add("close-button");
+            // Append Close Button To Popup Box
+            popupBoxCreated.append(closeButtonCreated);
         }
-        // Create Popup Image
-        let popupImageCreated = document.createElement("img");
-        // Add Class Name To Popup Image
-        popupImageCreated.classList.add("popup-image");
-        // Get Src Of Clicked Image
-        let imageSrc = item.getAttribute("src");
-        // Set Src Of Clicked Image To Popup Image
-        popupImageCreated.setAttribute("src", imageSrc);
-        // Append Popup Image to Popup Box
-        popupBoxCreated.append(popupImageCreated);
-        // Append Popup Box To Body
-        document.body.append(popupBoxCreated);
-        // Create Close Button
-        let closeButtonCreated = document.createElement("div");
-        // Create X char
-        let closeTextCreated = document.createTextNode("X");
-        // Append Close Text To Close Button
-        closeButtonCreated.append(closeTextCreated);
-        // Add Class Name To Close Button
-        closeButtonCreated.classList.add("close-button");
-        // Append Close Button To Popup Box
-        popupBoxCreated.append(closeButtonCreated);
     }
 });
 
 // Close Popup
 document.addEventListener("click", function(event) {
     let element = event.target;
-    console.log(element);
     if (element.classList.contains("close-button")) {
         // Get Popup Box Element
         let popupBox = document.querySelector("div[class='popup-box']");
@@ -328,6 +329,62 @@ document.addEventListener("click", function(event) {
         let overlay = document.querySelector("div[class='popup-overlay']");
         // Remove Overlay Element From Body
         overlay.remove();
+    }
+    // Make Click Cancel To Be False
+    clickCancel = false;
+});
+
+// Get Scrolling Images
+let scrollingImages = document.querySelector("main .container .images-box .scrolling-images");
+// Check If Dragging Is Executed Or Not
+let isDragging = false;
+// Variables For Move Scrolling Images Horizontally
+let startX, startScrollLeft;
+// Make Event When Pressing Mouse Button to Scrolling Images
+scrollingImages.onmousedown = function(event) {
+    isDragging = true;
+    // Get Images
+    let images = document.querySelectorAll("main .container .images-box .scrolling-images img");
+    // Iterate Over Images Items
+    images.forEach((item) => {
+        // Set Draggable Attribute With Value False To All Items
+        item.setAttribute("draggable", "false");
+    });
+    startX = event.pageX;
+    startScrollLeft = scrollingImages.scrollLeft;
+}
+// Make Event When Moving Mouse According to Scrolling Images
+scrollingImages.onmousemove = function(event) {
+    if (!isDragging) return;
+    // Add Dragging Class Name To Scrolling Images
+    scrollingImages.classList.add("dragging");
+    // Move Scrolling Images Horizontally
+    scrollingImages.scrollLeft = startScrollLeft - (event.pageX - startX);
+    // Make Click Cancel To Be True
+    clickCancel = true;
+}
+// Make Event When Releasing Mouse Button From Scrolling Images
+scrollingImages.onmouseup = function(event) {
+    // Add Dragging Class Name To Scrolling Images
+    scrollingImages.classList.remove("dragging");
+    // Get Images
+    let images = document.querySelectorAll("main .container .images-box .scrolling-images img");
+    // Iterate Over Images Items
+    images.forEach((item) => {
+        // Remove Draggable Attribute From All Items
+        item.removeAttribute("draggable");
+    });
+    isDragging = false;
+}
+
+// Get Arrow Scrolling
+let arrowScrollImages = document.querySelectorAll("main .container .images-box i");
+// Iterate Over Arrow Scrolling Items
+arrowScrollImages.forEach((item) => {
+    item.onclick = function(event) {
+        let image = document.querySelector("main .container .images-box .scrolling-images img");
+        let imageWidth = image.offsetWidth;
+        scrollingImages.scrollLeft += (item.classList.contains("left") ? -imageWidth : imageWidth);
     }
 });
 
