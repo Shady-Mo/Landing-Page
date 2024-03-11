@@ -525,6 +525,7 @@ main section .container .images-box .scrolling-images {
    overflow: auto;
    scroll-snap-type: x mandatory;
    scroll-behavior: smooth;
+   user-select: none;
 }
 
 main section .container .images-box .scrolling-images::-webkit-scrollbar {
@@ -539,6 +540,7 @@ main section .container .images-box .scrolling-images img {
    background-color: #f6f6f6;
    cursor: pointer;
    scroll-snap-align: start;
+   user-select: none;
 }
 
 main section .container .images-box i {
@@ -555,7 +557,6 @@ main section .container .images-box i {
    transform: translateY(-50%);
    cursor: pointer;
    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
-   /* opacity: 0.8; */
 }
 
 main section .container .images-box i.left {
@@ -615,13 +616,12 @@ main section .container .images-box i.right {
 }
 
 main section .container .images-box .dragging {
-   cursor: grab;
-   user-select: none;
+   cursor: grab !important;
 }
 
-main section .container .images-box .dragging img {
-   cursor: grab;
-   user-select: none;
+main section .container .images-box .disabled {
+   cursor: no-drop !important;
+   opacity: 0.7;
 }
 
 /* End Gallery Section */

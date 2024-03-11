@@ -186,7 +186,8 @@ if (selector === "yes") {
 
 // Select Skills Element
 let ourSkills = document.querySelector("main .our-skills .container .skills");
-
+// Select Box Of Our Skills Element
+let ourSkillsBox = document.querySelector("main .our-skills .container .box");
 // Select Skills Progress Items
 let skillsProgress = document.querySelectorAll("main .our-skills .container .skills .skill-box .skill-progress");
 // Get The Amount Of Scrolling To reach The Top Of Our Skills Element
@@ -196,7 +197,7 @@ let doneCounter = false;
 
 // Make Event When Scrolling
 window.onscroll = function() {
-    if (window.scrollY >= ourSkillsOffsetTop - 650) {
+    if (window.innerHeight > ourSkillsBox.getBoundingClientRect().top) {
         skillsProgress.forEach((item) => {
             // Get Skill Name
             let skillName = item.classList[1];
@@ -230,7 +231,7 @@ window.onscroll = function() {
     }
 }
 
-if (window.scrollY >= ourSkillsOffsetTop - 650) {
+if (window.innerHeight > ourSkillsBox.getBoundingClientRect().top) {
     skillsProgress.forEach((item) => {
         // Get Skill Name
         let skillName = item.classList[1];
@@ -340,6 +341,20 @@ let scrollingImages = document.querySelector("main .container .images-box .scrol
 let isDragging = false;
 // Variables For Move Scrolling Images Horizontally
 let startX, startScrollLeft;
+// Get Arrow Scrolling
+let arrowScrollImages = document.querySelectorAll("main .container .images-box i");
+// Add Class Name Counter To All Images
+function countImage() {
+    // Get All Images
+    let images = document.querySelectorAll("main .container .images-box .scrolling-images img");
+    // Iterate Over Images Items
+    for (let i = 1; i <= images.length; i++) {
+        // Add Class Name Counter To All Images
+        images[i - 1].setAttribute("class", i);
+    }
+}
+// Execute Function
+countImage();
 // Make Event When Pressing Mouse Button to Scrolling Images
 scrollingImages.onmousedown = function(event) {
     isDragging = true;
@@ -358,6 +373,13 @@ scrollingImages.onmousemove = function(event) {
     if (!isDragging) return;
     // Add Dragging Class Name To Scrolling Images
     scrollingImages.classList.add("dragging");
+    // Get Images
+    let images = document.querySelectorAll("main .container .images-box .scrolling-images img");
+    // Iterate Over Images Items
+    images.forEach((item) => {
+        // Add Dragging Class Name To All Items
+        item.classList.add("dragging");
+    });
     // Move Scrolling Images Horizontally
     scrollingImages.scrollLeft = startScrollLeft - (event.pageX - startX);
     // Make Click Cancel To Be True
@@ -373,19 +395,68 @@ scrollingImages.onmouseup = function(event) {
     images.forEach((item) => {
         // Remove Draggable Attribute From All Items
         item.removeAttribute("draggable");
+        // Remove Dragging Class Name To All Items
+        item.classList.remove("dragging");
     });
     isDragging = false;
 }
-
-// Get Arrow Scrolling
-let arrowScrollImages = document.querySelectorAll("main .container .images-box i");
 // Iterate Over Arrow Scrolling Items
 arrowScrollImages.forEach((item) => {
     item.onclick = function(event) {
+        // Get First Image
         let image = document.querySelector("main .container .images-box .scrolling-images img");
+        // Get Width Of First Image
         let imageWidth = image.offsetWidth;
+        // Move Scrolling Images By Width Image Horizontally
         scrollingImages.scrollLeft += (item.classList.contains("left") ? -imageWidth : imageWidth);
     }
 });
+// Make Event When Scrolling Images Is Scrolling
+scrollingImages.onscroll = function() {
+    // Select The Distance Between Left Edge Of Scrolling Images And Left Window
+    let scrollingImagesLeft = Math.floor(scrollingImages.getBoundingClientRect().left);
+    // Select The Distance Between Right Edge Of Scrolling Images And Right Window
+    let scrollingImagesRight = Math.floor(scrollingImages.getBoundingClientRect().right);
+    // Select Left Most Image Right Most Image
+    let leftMostImage, rightMostImage;
+    // Get All Images
+    let images = document.querySelectorAll("main .container .images-box .scrolling-images img");
+    // Iterate Over All Images As Items
+    images.forEach((item) => {
+        let imageRect = item.getBoundingClientRect();
+        if (Math.floor(imageRect.left) === scrollingImagesLeft) {
+            leftMostImage = item;
+        }
+        if (Math.floor(imageRect.right) === scrollingImagesRight) {
+            rightMostImage = item;
+        }
+    });
+    if (leftMostImage && rightMostImage) {
+        if (leftMostImage.className === "1") {
+            // Get Left Arrow
+            let leftArrow = arrowScrollImages[0];
+            // Add Disabled Class Name To Left Arrow
+            leftArrow.classList.add("disabled");
+        }
+        else {
+            // Get Left Arrow
+            let leftArrow = arrowScrollImages[0];
+            // Remove Disabled Class Name To Left Arrow
+            leftArrow.classList.remove("disabled");
+        }
+        if (rightMostImage.className === `${images.length}`) {
+            // Get Left Arrow
+            let rightArrow = arrowScrollImages[1];
+            // Add Disabled Class Name To Left Arrow
+            rightArrow.classList.add("disabled");
+        }
+        else {
+            // Get Left Arrow
+            let rightArrow = arrowScrollImages[1];
+            // Remove Disabled Class Name To Left Arrow
+            rightArrow.classList.remove("disabled");
+        }
+    }
+}
 
 /* End Main */
