@@ -27,14 +27,12 @@ function findCssRule(selectorString) {
     return false;
 }
 
-/* Start Side Bar Actions */
+/* Start Side Bar */
 
 // Select Settings Box Element
 let settingBox = document.querySelector("div.settings-box");
-
 // Select Trigger Element
 let trigger = document.querySelector("div.settings-box .trigger");
-
 // Make Event When Click On Trigger Element
 trigger.onclick = function(event) {
     // Toggle Open Class Name
@@ -49,10 +47,8 @@ trigger.onclick = function(event) {
         gear.style.removeProperty("animation-name");
     }
 }
-
 // Select Colors List Items
 let colorsItems = document.querySelectorAll("aside .settings-box .box .settings-container ul li");
-
 // Set Default To Main Color From Local Storage
 let mainColor = window.localStorage.getItem("main-color");
 if (mainColor) {
@@ -76,7 +72,6 @@ else {
     // Set Main Color To Color Of Clicked Element
     document.documentElement.style.setProperty("--main-color", item.dataset.color);
 }
-
 // Make Event When Click On Colors List Items
 colorsItems.forEach((item) => {
     item.onclick = function() {
@@ -100,7 +95,7 @@ colorsItems.forEach((item) => {
 
 /* End Side Bar */
 
-/* Start Header Actions */
+/* Start Header */
 
 // Select Images
 let imgsArr = ["../images/Coding.jpg", "../images/CSS_Coding.jpg", "../images/Laptop.jpg", "../images/NoteBook.jpg"];
@@ -134,7 +129,6 @@ else {
     // Set Default To Selector
     selector = "yes";
 }
-
 // Make Event When Click On Random Backgrounds Items
 randomBackgrounds.forEach((item) => {
     item.onclick = function() {
@@ -158,7 +152,6 @@ randomBackgrounds.forEach((item) => {
         }
     }
 });
-
 // Change Background Images Funciton
 function changeBackground() {
     // Get Image URL
@@ -180,9 +173,11 @@ if (selector === "yes") {
     backgroundInterval = setInterval(changeBackground, 10000);
 }
 
-/* End Header Actions */
+/* End Header */
 
 /* Start Main */
+
+/* Start Our Skills Section */
 
 // Select Skills Element
 let ourSkills = document.querySelector("main .our-skills .container .skills");
@@ -194,7 +189,6 @@ let skillsProgress = document.querySelectorAll("main .our-skills .container .ski
 let ourSkillsOffsetTop = ourSkills.offsetTop;
 // For Checking counter
 let doneCounter = false;
-
 // Make Event When Scrolling
 window.onscroll = function() {
     if (window.innerHeight > ourSkillsBox.getBoundingClientRect().top) {
@@ -265,6 +259,10 @@ if (window.innerHeight > ourSkillsBox.getBoundingClientRect().top) {
     doneCounter = true;
 }
 
+/* End Our Skills Section */
+
+/* Start Gallery Section */
+
 // Get All Images Of Gallery
 let ourGalleryImages = document.querySelectorAll("main section .container .images-box .scrolling-images img");
 // Canceling Click If Dragging Is Executed
@@ -317,7 +315,6 @@ ourGalleryImages.forEach((item) => {
         }
     }
 });
-
 // Close Popup
 document.addEventListener("click", function(event) {
     let element = event.target;
@@ -458,5 +455,7 @@ scrollingImages.onscroll = function() {
         }
     }
 }
+
+/* End Gallery Section */
 
 /* End Main */

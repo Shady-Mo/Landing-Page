@@ -20,13 +20,13 @@
    width: 10px;
 }
 
+::-webkit-scrollbar-track {
+   background-color: #ddd;
+}
+
 ::-webkit-scrollbar-thumb {
    background-color: var(--main-color);
    border-radius: 5px;
-}
-
-::-webkit-scrollbar-track {
-   background-color: #ddd;
 }
 
 * {
@@ -34,15 +34,15 @@
    box-sizing: border-box;
    padding: 0;
    margin: 0;
+   font-size: 1rem;
 }
 
 html {
    scroll-behavior: smooth;
-   font-size: 1rem;
 }
 
 body {
-   height: 200vh;
+   /* height: 200vh; */
 }
 
 ul {
@@ -313,8 +313,11 @@ header .container .landing-page .header-area ul {
 }
 
 header .container .landing-page .header-area ul li {
-   font-size: 1.1rem;
    position: relative;
+}
+
+header .container .landing-page .header-area ul li a {
+   font-size: 1.1rem;
 }
 
 header .container .landing-page .header-area ul li::after {
@@ -351,6 +354,7 @@ header .container .landing-page .intro-text {
 
 header .container .landing-page .intro-text span {
    color: var(--main-color);
+   font-size: 2.5rem;
 }
 
 header .container .landing-page .intro-text h1 {
@@ -370,7 +374,7 @@ header .container .landing-page .intro-text p {
 /* Start about Section */
 
 main section {
-   padding: 50px;
+   padding: 50px 0;
 }
 
 main section .container h2 {
@@ -625,5 +629,113 @@ main section .container .images-box .disabled {
 }
 
 /* End Gallery Section */
+
+/* Start Timeline */
+
+main section.timeline {
+   background-color: var(--light-white);
+}
+
+main section.timeline .timeline-content {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+
+main section.timeline .timeline-content::before {
+   content: "";
+   position: absolute;
+   height: 100%;
+   width: 2px;
+   left: 50%;
+   transform: translateX(-50%);
+   top: 0;
+   background-color: var(--main-color);
+}
+
+main section.timeline .timeline-content .year {
+   background-color: var(--main-color);
+   margin: 20px auto;
+   width: fit-content;
+   padding: 0.2em;
+   color: white;
+   border-radius: 4px;
+   z-index: 1;
+}
+
+main section.timeline .timeline-content .box {
+   display: flex;
+   flex-direction: column;
+}
+
+main section.timeline .timeline-content .box .right {
+   align-self: flex-end;
+}
+
+main section.timeline .timeline-content .box :where(.left, .right) {
+   width: calc(50% - 25px);
+   margin-bottom: 20px;
+   background-color: white;
+   padding: 20px;
+   position: relative;
+}
+
+main section.timeline .timeline-content .box :where(.left, .right)::after {
+   content: "";
+   position: absolute;
+   width: 14px;
+   height: 14px;
+   background-color: white;
+   border: 3px solid var(--main-color);
+   border-radius: 50%;
+   transform: translateY(-50%);
+   top: 20%;
+}
+
+main section.timeline .timeline-content .box .left::after {
+   right: -35px;
+}
+
+main section.timeline .timeline-content .box .right::after {
+   left: -34px;
+}
+
+main section.timeline .timeline-content .box :where(.left, .right) .content {
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+
+main section.timeline .timeline-content .box :where(.left, .right) .content::after {
+   content: "";
+   position: absolute;
+   top: 14%;
+   border-width: 10px;
+   border-style: solid;
+}
+
+main section.timeline .timeline-content .box .left .content::after {
+   right: -19px;
+   border-color: transparent transparent transparent white;
+}
+
+main section.timeline .timeline-content .box .right .content::after {
+   left: -19px;
+   border-color: transparent white transparent transparent;
+}
+
+main section.timeline .timeline-content .box :where(.left, .right) .content h3 {
+   font-weight: bold;
+   color: var(--main-color);
+   font-size: 1.2rem;
+}
+
+main section.timeline .timeline-content .box :where(.left, .right) .content p {
+   line-height: 1.6;
+   color: #777;
+}
+
+/* End Timeline */
 
 /* End Main */
