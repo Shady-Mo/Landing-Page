@@ -801,7 +801,7 @@ main section .container .images-box .disabled {
 main section.timeline {
    background-color: var(--light-white);
    height: 100vh;
-   height: 100svh;
+   height: 100dvh;
 }
 
 main section.timeline .container .timeline-content {
