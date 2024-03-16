@@ -800,7 +800,7 @@ main section .container .images-box .disabled {
 
 main section.timeline {
    background-color: var(--light-white);
-   padding-bottom: 60px;
+   height: 100svh;
 }
 
 main section.timeline .container .timeline-content {
