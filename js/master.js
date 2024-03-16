@@ -29,6 +29,8 @@ function findCssRule(selectorString) {
 
 /* Start Side Bar */
 
+/* Start Settings Box */
+
 // Select Settings Box Element
 let settingBox = document.querySelector("div.settings-box");
 // Select Trigger Element
@@ -93,9 +95,126 @@ colorsItems.forEach((item) => {
     }
 });
 
+/* End Settings Box */
+
+/* Start Nav Bullet */
+
+// Get All Bullets
+let bullets = document.querySelectorAll("aside .nav-bullet .bullet");
+// Get Header Links
+let headerLinks = document.querySelectorAll("header .container .landing-page .header-area .links li a");
+// Iterate Over Each Bullet Item
+bullets.forEach((item) => {
+    // Make Event When Hover On Any Bullet
+    item.onmouseenter = function(event) {
+        bullets.forEach((item) => {
+            // Remove Hovered Bullet Class Name From All Bullets
+            item.classList.remove("hovered-bullet");
+        });
+        // Get Clicked Bullet Element
+        let element = event.target;
+        // Add Hovered Bullet Class Name To Clicked Element
+        element.classList.add("hovered-bullet");
+        // Get Clicked Element's Before
+        let elementBefore = findCssRule("aside div.nav-bullet .hovered-bullet::before");
+        // Get Index Of Current Header Link
+        let idx = element.dataset.index;
+        // Get Content Name
+        let contentName = headerLinks[idx - 1].textContent;
+        // Add Content Name To All Bullet Items
+        elementBefore.setProperty("content", `"${contentName}"`);
+    }
+    // Make Event When Remove Hover From Any Bullet
+    item.onmouseleave = function(event) {
+        bullets.forEach((item) => {
+            // Remove Hovered Bullet Class Name From All Bullets
+            item.classList.remove("hovered-bullet");
+        });
+    }
+    // Make Event When Click On Any Bullet
+    item.onclick = function(event) {
+        // Get Target Section Name
+        let targetSectionName = item.dataset.section;
+        // Get Target Section
+        let targetSection = document.querySelector(`section.${targetSectionName}`);
+        // Scroll To Clicked Section
+        targetSection.scrollIntoView({
+            behavior: "smooth",
+        });
+    }
+});
+
+window.addEventListener("scroll", (event) => {
+    // Get All Sections
+    let sections = document.querySelectorAll("section");
+    // Get Target Section
+    let targetSection = "none";
+    sections.forEach((item) => {
+        if (item.getBoundingClientRect().top < 1) {
+            targetSection = item.className;
+        }
+    });
+    if (targetSection === "none") {
+        // Iterate Over Bullets Elements
+        bullets.forEach((item) => {
+            // Remove Clicked Bullet Class Name From All Bullets
+            item.classList.remove("clicked-bullet");
+            // Remove Children From All Bullets
+            if (item.childNodes.length) {
+                item.removeChild(item.firstChild);
+            }
+        });
+        return;
+    }
+    // Get Target Element
+    let targetElement = document.querySelector(`aside .nav-bullet .bullet[data-section='${targetSection}']`);
+    // Iterate Over Bullets Elements
+    bullets.forEach((item) => {
+        // Remove Clicked Bullet Class Name From All Bullets
+        item.classList.remove("clicked-bullet");
+        // Remove Children From All Bullets
+        if (item.childNodes.length) {
+            item.removeChild(item.firstChild);
+        }
+    });
+    // Add Clicked Bullet Class Name To Target Element
+    targetElement.classList.add("clicked-bullet");
+    // Create An Element
+    let trueFontAwesomeCreated = document.createElement("i");
+    // Set Class Name To True Font Awesome Element
+    trueFontAwesomeCreated.setAttribute("class", "fa fa-check");
+    // Append Created Element To Clicked Element
+    targetElement.append(trueFontAwesomeCreated);
+});
+
+/* End Nav Bullet */
+
 /* End Side Bar */
 
 /* Start Header */
+
+// Get Links Container Icon
+let linksContainerIcon = document.querySelector("header .container .landing-page .header-area .links-container .icon");
+// Get UL Nav Links
+let ulNavLinks = document.querySelector("header .container .landing-page .header-area .links-container ul")
+// Get All Nav Links
+let NavLinks = document.querySelectorAll("header .container .landing-page .header-area .links-container ul li");
+// Make Event When Click On Links Container
+linksContainerIcon.addEventListener("click", (event) => {
+    event.stopPropagation();
+    // Add/Remove Open Class Name To UL Nav Links
+    ulNavLinks.classList.toggle("open");
+});
+// Make Event When Click On Anywhere
+document.addEventListener("click", (event) => {
+    let element = event.target;
+    if (element !== linksContainerIcon && element !== ulNavLinks) {
+        if (ulNavLinks.classList.contains("open")) {
+            // Remove Open Class Name From UL Nav Links
+            ulNavLinks.classList.remove("open");
+        }
+    }
+});
 
 // Select Images
 let imgsArr = ["../images/Coding.jpg", "../images/CSS_Coding.jpg", "../images/Laptop.jpg", "../images/NoteBook.jpg"];
@@ -180,17 +299,17 @@ if (selector === "yes") {
 /* Start Our Skills Section */
 
 // Select Skills Element
-let ourSkills = document.querySelector("main .our-skills .container .skills");
+let ourSkills = document.querySelector("main .skills .container .skills");
 // Select Box Of Our Skills Element
-let ourSkillsBox = document.querySelector("main .our-skills .container .box");
+let ourSkillsBox = document.querySelector("main .skills .container .box");
 // Select Skills Progress Items
-let skillsProgress = document.querySelectorAll("main .our-skills .container .skills .skill-box .skill-progress");
+let skillsProgress = document.querySelectorAll("main .skills .container .skills .skill-box .skill-progress");
 // Get The Amount Of Scrolling To reach The Top Of Our Skills Element
 let ourSkillsOffsetTop = ourSkills.offsetTop;
 // For Checking counter
 let doneCounter = false;
 // Make Event When Scrolling
-window.onscroll = function() {
+window.addEventListener("scroll", (event) => {
     if (window.innerHeight > ourSkillsBox.getBoundingClientRect().top) {
         skillsProgress.forEach((item) => {
             // Get Skill Name
@@ -223,8 +342,7 @@ window.onscroll = function() {
         });
         doneCounter = true;
     }
-}
-
+});
 if (window.innerHeight > ourSkillsBox.getBoundingClientRect().top) {
     skillsProgress.forEach((item) => {
         // Get Skill Name
@@ -381,6 +499,12 @@ scrollingImages.onmousemove = function(event) {
     scrollingImages.scrollLeft = startScrollLeft - (event.pageX - startX);
     // Make Click Cancel To Be True
     clickCancel = true;
+    // Get Scrolling Images Style
+    let scrollingImagesStyle = findCssRule("main section .container .images-box .scrolling-images");
+    // Remove scroll-snap-type Property
+    scrollingImagesStyle.removeProperty("scroll-snap-type");
+    // Remove scroll-behavior Property
+    scrollingImagesStyle.removeProperty("scroll-behavior");
 }
 // Make Event When Releasing Mouse Button From Scrolling Images
 scrollingImages.onmouseup = function(event) {
@@ -396,6 +520,12 @@ scrollingImages.onmouseup = function(event) {
         item.classList.remove("dragging");
     });
     isDragging = false;
+    // Get Scrolling Images Style
+    let scrollingImagesStyle = findCssRule("main section .container .images-box .scrolling-images");
+    // Add scroll-snap-type Property
+    scrollingImagesStyle.setProperty("scroll-snap-type", "x mandatory");
+    // Add scroll-behavior Property
+    scrollingImagesStyle.setProperty("scroll-behavior", "smooth");
 }
 // Iterate Over Arrow Scrolling Items
 arrowScrollImages.forEach((item) => {
