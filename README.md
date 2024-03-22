@@ -25,8 +25,7 @@ Landing web page to improve front-end skills
 ### Built with
 
 - HTML 5
-- CSS properties
-- Flexbox
+- CSS 3
 - Responsive design
 - DOM JS
 - BOM JS
