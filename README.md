@@ -14,7 +14,7 @@ Landing web page to improve front-end skills
 
 ### Screenshot
 
-![Screenshot of the project](./design/landing-page-design.jpg)
+![Screenshot of the project](./design/landing-page-design.png)
 
 ### Links
 
